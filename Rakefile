@@ -42,6 +42,9 @@ Rake::TestTask.new { |t|
   t.verbose = true
 }
 
+
+
+
 desc "Clean pkg, coverage, and rdoc; remove .bak files"
 task :clean => [ :clobber_rdoc, :clobber_package, :clobber_coverage ] do
   puts cmd = "find . -type f -name *.bak -delete"
@@ -141,4 +144,18 @@ Rake::GemPackageTask.new(spec) do |p|
   p.gem_spec = spec
   p.need_tar = true
   p.need_zip = true
+end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|    
+    gemspec.name = "plist"
+    gemspec.summary = "plist gem (binary)"
+    gemspec.description = "Gem to generate plists"
+    gemspec.email = "josh@technicalpickles.com"
+    gemspec.homepage = "http://github.com/technicalpickles/the-perfect-gem"
+    gemspec.authors = ["Josh Nichols"]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
 end
