@@ -162,11 +162,11 @@ module Plist
         obj = obj.to_s if obj.is_a?(Symbol)
         # This doesn't really work. NKF's guess method is really, really bad
         # at discovering UTF8 when only a handful of characters are multi-byte.
-        encoding = NKF.guess2(obj)
+        encoding = NKF.guess(obj)
         if obj =~ /[\x80-\xff]/
-          encoding = NKF::UTF8
+          encoding = Encoding::UTF_8
         end
-        if [NKF::ASCII, NKF::BINARY, NKF::UNKNOWN].include?(encoding)
+        if [Encoding::ASCII, Encoding::BINARY].include?(encoding)
           result = (CFBinaryPlistMarkerASCIIString |
             (obj.length < 15 ? obj.length : 0xf)).chr
           result += binary_plist_obj(obj.length) if obj.length >= 15
@@ -174,7 +174,7 @@ module Plist
           return result
         else
           # Convert to UTF8.
-          if encoding == NKF::UTF8
+          if encoding == Encoding::UTF_8
             utf8 = obj
           else
             utf8 = NKF.nkf("-m0 -w", obj)
