@@ -16,7 +16,7 @@ module Plist
 
   class Railtie
     def self.insert
-      Mime::Type.register 'application/xml', :plist
+      Mime::Type.register 'application/x-plist', :plist
       
       ActionController::Renderers.add :plist do |data, options|
         data = data.as_json(options)
